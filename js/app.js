@@ -64,7 +64,7 @@
       case "analogy":
         return `<div class="analogy"><div class="analogy-label">💡 비유로 이해하기</div><div class="analogy-body"><strong>${esc(b.title || "")}</strong>${b.title ? " — " : ""}${esc(b.text)}</div></div>`;
       case "steps":
-        return `<div class="steps-box"><div class="steps-title">${esc(b.title || "차근차근")}</div><ol class="steps-list">${(b.items || [])
+        return `<div class="steps-box"><div class="steps-title">${esc(b.title || "차근차근 안내")}</div><ol class="steps-list">${(b.items || [])
           .map((s, i) => {
             if (typeof s === "string") return `<li><span class="step-n">${i + 1}</span><span>${esc(s)}</span></li>`;
             return `<li><span class="step-n">${i + 1}</span><span><strong>${esc(s.title || "")}</strong>${s.title ? " — " : ""}${esc(s.text || s.body || "")}</span></li>`;
@@ -125,7 +125,7 @@
       const ach = CURRICULUM.achievements || [];
       s._justUnlocked.forEach((id) => {
         const a = ach.find((x) => x.id === id);
-        if (a) toast(`${a.icon} 업적 해제: ${a.title}`);
+        if (a) toast(`${a.icon} 업적이 해제되었습니다: ${a.title}`);
       });
       delete s._justUnlocked;
       Progress.save(s);
@@ -193,7 +193,7 @@
 
     let sections = ch.sections
       .map((sec, i) => {
-        const note = sec.note ? `<div class="personal-note">✏️ ${esc(sec.note)}</div>` : "";
+        const note = sec.note ? `<div class="personal-note">✏️ 메모 · ${esc(sec.note)}</div>` : "";
         const body = (sec.body || []).map(renderBlock).join("");
         return `<article class="section" id="sec-${esc(sec.id)}">
           <h2><span class="sn">${esc(sec.id)}</span> ${esc(sec.title)}</h2>
@@ -204,14 +204,14 @@
 
     let take = "";
     if (ch.keyTakeaways?.length) {
-      take = `<div class="panel"><h3>🔑 한 장 정리</h3><ul class="takeaways">${ch.keyTakeaways
+      take = `<div class="panel"><h3>🔑 이 장 핵심 정리</h3><ul class="takeaways">${ch.keyTakeaways
         .map((t) => `<li>${esc(t)}</li>`)
         .join("")}</ul></div>`;
     }
 
     let checklist = "";
     if (ch.checklist?.length) {
-      checklist = `<div class="panel"><h3>☑️ 미니 체크</h3><ul>${ch.checklist
+      checklist = `<div class="panel"><h3>☑️ 학습 체크리스트</h3><ul>${ch.checklist
         .map((t) => `<li>${esc(t)}</li>`)
         .join("")}</ul></div>`;
     }
@@ -224,7 +224,7 @@
         <p><strong>목표:</strong> ${esc(ch.lab.goal)}</p>
         <ol>${ch.lab.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol>
         <button type="button" class="btn btn-ghost btn-sm" id="btn-lab" ${labDone ? "disabled" : ""}>
-          ${labDone ? "✓ 랩 완료 표시됨" : "랩 완료로 표시 (+XP)"}
+          ${labDone ? "✓ 실험실 완료로 표시됨" : "실험실 완료로 표시하기 (+XP)"}
         </button>
       </div>`;
     }
@@ -233,7 +233,7 @@
     const qs = (window.QUIZZES && QUIZZES[id]) || [];
     let quiz = "";
     if (qs.length) {
-      quiz = `<div class="panel quiz-panel"><h3>🎯 이해도 퀴즈</h3>
+      quiz = `<div class="panel quiz-panel"><h3>🎯 이해도 확인 퀴즈</h3>
         <div id="quiz-box">${qs
           .map(
             (q, qi) => `<div class="quiz-q" data-qi="${qi}">
@@ -276,7 +276,7 @@
       ${lab}
       ${quiz}
       <div class="ch-actions">
-        <button type="button" class="btn btn-primary" id="btn-complete">${done ? "✓ 완료됨 (다시 저장)" : "이 장 완료하기"}</button>
+        <button type="button" class="btn btn-primary" id="btn-complete">${done ? "✓ 완료됨 (다시 저장하기)" : "이 장 완료하기"}</button>
         ${prev ? `<button type="button" class="btn btn-ghost" data-go="${prev.id}">← ${esc(prev.title)}</button>` : ""}
         ${next ? `<button type="button" class="btn btn-ghost" data-go="${next.id}">${esc(next.title)} →</button>` : ""}
       </div>
@@ -285,7 +285,7 @@
     $("#btn-complete").onclick = () => {
       Progress.completeChapter(id, ch.xp);
       updateProgressUI();
-      toast(`완료! +${ch.xp} XP — ${ch.title}`);
+      toast(`완료되었습니다! +${ch.xp} XP — ${ch.title}`);
       openChapter(id);
     };
 
@@ -294,7 +294,7 @@
       labBtn.onclick = () => {
         Progress.completeLab(id);
         updateProgressUI();
-        toast("실험실 완료 표시 +40 XP");
+        toast("실험실 완료로 표시되었습니다 (+40 XP)");
         openChapter(id);
       };
     }
@@ -309,7 +309,7 @@
       if (go) openChapter(go.dataset.go);
       const copy = e.target.closest("[data-copy]");
       if (copy) {
-        navigator.clipboard?.writeText(copy.getAttribute("data-copy")).then(() => toast("복사됨"));
+        navigator.clipboard?.writeText(copy.getAttribute("data-copy")).then(() => toast("복사되었습니다"));
       }
     };
 
@@ -337,8 +337,12 @@
     Progress.recordQuiz(id, score, qs.length);
     updateProgressUI();
     const el = $("#quiz-result");
-    el.textContent = `결과: ${score}/${qs.length}` + (score === qs.length ? " 🎉 만점! 저자급 감각." : " — 틀린 보기를 다시 읽어보세요.");
-    toast(`퀴즈 ${score}/${qs.length}`);
+    el.textContent =
+      `결과: ${score}/${qs.length}` +
+      (score === qs.length
+        ? " 🎉 만점입니다. 훌륭합니다!"
+        : " — 틀린 항목은 본문을 다시 한번 읽어 보시면 도움이 됩니다.");
+    toast(`퀴즈 결과 ${score}/${qs.length}`);
   }
 
   function openDashboard() {
@@ -382,15 +386,15 @@
           <span class="tag">${st.pct}% 완료</span>
           <span class="tag pink">XP ${st.xp}</span>
         </div>
-        <h1>혼자 정리한 API 해킹 로드맵</h1>
-        <p class="tagline">코리 볼 《API 해킹의 모든 것》 흐름을 따라, 조금씩 — 끝까지. 끝나면 저자급 지도를 머릿속에 남긴다.</p>
+        <h1>API 해킹 학습 로드맵</h1>
+        <p class="tagline">코리 볼 《API 해킹의 모든 것》 흐름을 따라 조금씩 학습해 보세요. 과정을 마치면 체계적인 지도를 정리하실 수 있습니다.</p>
       </header>
       <button type="button" class="legal-banner" id="btn-legal-dash">
         <div>
-          <strong>⚖ 합법적으로 해킹 연습하는 곳</strong>
-          <span>로컬 랩 · PortSwigger · TryHackMe/HTB · 버그바운티 — 어디서, 어떻게 시작하는지 친절 가이드</span>
+          <strong>⚖ 합법적으로 해킹을 연습하는 곳</strong>
+          <span>로컬 랩 · PortSwigger · TryHackMe/HTB · 버그바운티 — 시작 방법을 안내합니다</span>
         </div>
-        <span class="legal-banner-go">열어보기 →</span>
+        <span class="legal-banner-go">자세히 보기 →</span>
       </button>
       <div class="dash-grid">${parts}</div>
       <h3 style="margin:0 0 0.75rem">전체 장</h3>
@@ -412,7 +416,7 @@
 
   function openLegalLabs() {
     if (!window.LEGAL_LABS) {
-      toast("legal-labs.js 로드 실패");
+      toast("legal-labs.js를 불러오지 못했습니다");
       return;
     }
     state.chapterId = null;
@@ -456,9 +460,9 @@
                 </div>
                 <a class="btn btn-primary btn-sm" href="${esc(pl.url)}" target="_blank" rel="noopener noreferrer">사이트 열기 ↗</a>
               </div>
-              <p class="plat-why"><strong>왜 가나요?</strong> ${esc(pl.why)}</p>
+              <p class="plat-why"><strong>선택 이유</strong> ${esc(pl.why)}</p>
               <div class="plat-how">
-                <div class="how-title">이렇게 시작하세요</div>
+                <div class="how-title">시작 방법</div>
                 <ol class="how-list">${how}</ol>
               </div>
               ${pl.tip ? `<div class="callout tip"><div class="ct">팁</div><div>${esc(pl.tip)}</div></div>` : ""}
@@ -492,15 +496,15 @@
       <header class="ch-hero" data-num="⚖">
         <div class="ch-meta">
           <span class="tag cyan">Legal only</span>
-          <span class="tag amber">허가된 곳만</span>
-          <span class="tag pink">친절 가이드</span>
+          <span class="tag amber">허가된 환경만</span>
+          <span class="tag pink">실습 안내</span>
         </div>
         <h1>${esc(L.intro.title)}</h1>
         <p class="tagline">${esc(L.intro.tagline)}</p>
       </header>
 
       <div class="callout warn">
-        <div class="ct">황금 규칙 — 이것만 기억해도 절반은 성공</div>
+        <div class="ct">기본 원칙 — 이것만 기억하셔도 절반은 성공입니다</div>
         <ul class="rule-list">${rules}</ul>
       </div>
 
@@ -508,13 +512,13 @@
         <a href="#legal-paths">추천 루트</a>
         ${toc}
         <a href="#legal-week">주간 루틴</a>
-        <a href="#legal-check">출격 전 체크</a>
+        <a href="#legal-check">실습 전 체크</a>
         <a href="#legal-faq">FAQ</a>
       </nav>
 
       <section class="section" id="legal-paths">
-        <h2><span class="sn">ROUTE</span> 나한테 맞는 길</h2>
-        <p>책을 읽는 것과 손을 쓰는 것은 다르다. 아래 중 하나 골라 <strong>이번 주부터</strong> 따르면 된다.</p>
+        <h2><span class="sn">ROUTE</span> 학습 상황에 맞는 길</h2>
+        <p>책을 읽는 것과 직접 실습하는 것은 다릅니다. 아래 중 하나를 고르신 뒤 <strong>이번 주부터</strong> 따라가 보시면 됩니다.</p>
         <div class="path-grid">${paths}</div>
       </section>
 
@@ -526,7 +530,7 @@
       </section>
 
       <section class="section" id="legal-check">
-        <h2><span class="sn">CHECK</span> 패킷 보내기 전 체크리스트</h2>
+        <h2><span class="sn">CHECK</span> 요청을 보내기 전 체크리스트</h2>
         <ul class="takeaways">${check}</ul>
       </section>
 
@@ -536,7 +540,7 @@
       </section>
 
       <div class="ch-actions">
-        <button type="button" class="btn btn-primary" id="btn-legal-back">← 대시보드로</button>
+        <button type="button" class="btn btn-primary" id="btn-legal-back">← 대시보드로 돌아가기</button>
         <button type="button" class="btn btn-ghost" id="btn-legal-ch0">Ch.0 보안 테스트 준비 읽기</button>
       </div>
     `;
@@ -563,7 +567,7 @@
     $("#panel-tools").innerHTML = `
       <header class="ch-hero" data-num="{ }">
         <h1>해커 작업대</h1>
-        <p class="tagline">읽기만 하지 말고, 토큰을 까보고 요청을 조립해보자.</p>
+        <p class="tagline">읽기에 그치지 말고, 토큰을 살펴보고 요청을 직접 조립해 보세요.</p>
       </header>
       <div class="tools-grid">
         <div class="tool-card">
@@ -644,7 +648,7 @@ Accept: application/json</textarea></div>
     $("#crumb").innerHTML = "<strong>용어집</strong>";
     $("#panel-glossary").innerHTML = `
       <header class="ch-hero" data-num="Aa"><h1>용어집</h1>
-      <p class="tagline">책·노트에 반복되는 단어를 한곳에.</p></header>
+      <p class="tagline">책과 노트에 반복되는 용어를 한곳에 모아 두었습니다.</p></header>
       <div class="field"><label>검색</label><input id="gloss-search" placeholder="BOLA, JWT..." /></div>
       <div class="glossary-list" id="gloss-list"></div>`;
     const render = () => {
@@ -668,7 +672,7 @@ Accept: application/json</textarea></div>
     const s = Progress.get();
     $("#panel-achievements").innerHTML = `
       <header class="ch-hero" data-num="★"><h1>업적</h1>
-      <p class="tagline">진도를 게임처럼. 전부 모으면 👑</p></header>
+      <p class="tagline">학습 진도를 업적으로 기록합니다. 모두 모으시면 👑</p></header>
       <div class="ach-grid">${(CURRICULUM.achievements || [])
         .map((a) => {
           const on = !!s.achievements[a.id];
@@ -684,7 +688,7 @@ Accept: application/json</textarea></div>
         updateProgressUI();
         buildSidebar();
         openAchievements();
-        toast("초기화 완료");
+        toast("진도가 초기화되었습니다");
       }
     };
   }
@@ -713,7 +717,7 @@ Accept: application/json</textarea></div>
       const c = cards[state.flashIdx];
       $("#panel-flash").innerHTML = `
         <header class="ch-hero" data-num="▤"><h1>플래시카드</h1>
-        <p class="tagline">출퇴근·쉬어갈 때. ${state.flashIdx + 1} / ${cards.length}</p></header>
+        <p class="tagline">짧게 복습하실 때 활용해 보세요. ${state.flashIdx + 1} / ${cards.length}</p></header>
         <div class="flash-wrap"><div class="flash" id="flash-card">
           <div><div class="fs">${flipped ? "ANSWER" : "PROMPT"}</div>
           <div class="ft">${esc(flipped ? c.back : c.front)}</div></div>
@@ -800,7 +804,7 @@ Accept: application/json</textarea></div>
       }
     } catch (err) {
       console.error("enterApp failed", err);
-      toast("화면 전환 오류: " + (err && err.message ? err.message : err));
+      toast("화면 전환 중 오류가 발생했습니다: " + (err && err.message ? err.message : err));
     }
   }
 

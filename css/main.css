@@ -759,7 +759,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   letter-spacing: 0.04em;
   color: var(--violet);
   margin-bottom: 0.4rem;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .analogy-body {
   color: #e0dcf8;

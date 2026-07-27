@@ -19,7 +19,7 @@ window.DIAGRAMS = {
   <line x1="485" y1="125" x2="190" y2="125" stroke="#f472b6" stroke-width="2" marker-end="url(#arrow2)"/>
   <text x="340" y="150" text-anchor="middle" fill="#f472b6" font-size="12" font-family="ui-monospace,monospace">← 응답 RESPONSE</text>
   <text x="340" y="168" text-anchor="middle" fill="#6b7394" font-size="10" font-family="ui-monospace,monospace">상태코드 · 헤더 · JSON 등</text>
-  <text x="340" y="205" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">해커는 이 대화를 가로채서 읽고, 고치고, 다시 보낸다</text>
+  <text x="340" y="205" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">테스터는 이 대화를 가로채 읽고, 수정한 뒤 다시 보냅니다</text>
 </svg>`,
 
   http_anatomy: `
@@ -42,17 +42,17 @@ window.DIAGRAMS = {
   <rect x="20" y="50" width="200" height="90" rx="14" fill="#151a30" stroke="#00e5ff"/>
   <text x="120" y="85" text-anchor="middle" fill="#00e5ff" font-size="13" font-family="system-ui,sans-serif" font-weight="700">HEADER</text>
   <text x="120" y="108" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="ui-monospace,monospace">alg, typ</text>
-  <text x="120" y="125" text-anchor="middle" fill="#6b7394" font-size="10" font-family="system-ui,sans-serif">어떻게 서명했나</text>
+  <text x="120" y="125" text-anchor="middle" fill="#6b7394" font-size="10" font-family="system-ui,sans-serif">서명 방식</text>
   <text x="230" y="100" fill="#6b7394" font-size="22" font-family="ui-monospace,monospace">.</text>
   <rect x="250" y="50" width="200" height="90" rx="14" fill="#151a30" stroke="#f472b6"/>
   <text x="350" y="85" text-anchor="middle" fill="#f472b6" font-size="13" font-family="system-ui,sans-serif" font-weight="700">PAYLOAD</text>
   <text x="350" y="108" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="ui-monospace,monospace">sub, role, exp…</text>
-  <text x="350" y="125" text-anchor="middle" fill="#6b7394" font-size="10" font-family="system-ui,sans-serif">주장(클레임) 내용</text>
+  <text x="350" y="125" text-anchor="middle" fill="#6b7394" font-size="10" font-family="system-ui,sans-serif">클레임(주장) 내용</text>
   <text x="460" y="100" fill="#6b7394" font-size="22" font-family="ui-monospace,monospace">.</text>
   <rect x="480" y="50" width="180" height="90" rx="14" fill="#151a30" stroke="#fbbf24"/>
   <text x="570" y="85" text-anchor="middle" fill="#fbbf24" font-size="13" font-family="system-ui,sans-serif" font-weight="700">SIGNATURE</text>
   <text x="570" y="108" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="ui-monospace,monospace">서명 검증</text>
-  <text x="570" y="125" text-anchor="middle" fill="#6b7394" font-size="10" font-family="system-ui,sans-serif">위조 방지 도장</text>
+  <text x="570" y="125" text-anchor="middle" fill="#6b7394" font-size="10" font-family="system-ui,sans-serif">위조 방지용 서명</text>
   <text x="340" y="175" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">앞 두 부분은 누구나 디코드 가능 · 진짜 보호는 서명 검증 + 서버 권한 로직</text>
 </svg>`,
 
@@ -70,14 +70,14 @@ window.DIAGRAMS = {
   <rect x="310" y="55" width="200" height="150" rx="14" fill="#151a30" stroke="#a78bfa"/>
   <text x="410" y="95" text-anchor="middle" fill="#e8eaf6" font-size="13" font-family="system-ui,sans-serif" font-weight="700">API 서버</text>
   <text x="410" y="120" text-anchor="middle" fill="#fb7185" font-size="12" font-family="system-ui,sans-serif">❌ 소유권 검사 없음</text>
-  <text x="410" y="145" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="system-ui,sans-serif">“로그인만 되면 OK”</text>
+  <text x="410" y="145" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="system-ui,sans-serif">“로그인만 되면 통과”</text>
   <text x="410" y="175" text-anchor="middle" fill="#34d399" font-size="12" font-family="system-ui,sans-serif">✓ 정상이라면</text>
   <text x="410" y="193" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="system-ui,sans-serif">order.owner == A ?</text>
   <path d="M520 130 H600" stroke="#fbbf24" stroke-width="2"/>
   <rect x="560" y="100" width="100" height="60" rx="10" fill="#1a1520" stroke="#fbbf24"/>
   <text x="610" y="125" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="system-ui,sans-serif" font-weight="700">200 OK</text>
-  <text x="610" y="145" text-anchor="middle" fill="#9aa3c7" font-size="10" font-family="system-ui,sans-serif">B의 주문 유출</text>
-  <text x="340" y="245" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">검증: A 토큰 + B의 객체 ID → 데이터가 오면 BOLA</text>
+  <text x="610" y="145" text-anchor="middle" fill="#9aa3c7" font-size="10" font-family="system-ui,sans-serif">B의 주문이 유출됨</text>
+  <text x="340" y="245" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">검증: A 토큰 + B의 객체 ID로 데이터가 오면 BOLA</text>
 </svg>`,
 
   rest_vs_gql: `
@@ -149,7 +149,7 @@ window.DIAGRAMS = {
     <rect x="540" y="50" width="90" height="56" rx="10" fill="#151a30" stroke="#fb7185"/><text x="585" y="75" fill="#fb7185" font-weight="700">착취</text><text x="585" y="92" fill="#9aa3c7" font-size="10">할당·주입</text>
   </g>
   <path d="M105 78 H120 M210 78 H225 M315 78 H330 M420 78 H435 M525 78 H540" stroke="url(#pipe)" stroke-width="2"/>
-  <text x="350" y="140" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">앞 단계를 건너뛰면 뒤 단계에서 길을 잃는다</text>
+  <text x="350" y="140" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">앞 단계를 건너뛰면 이후 단계에서 방향을 잃기 쉽습니다</text>
 </svg>`,
 
   threat_boxes: `
@@ -176,17 +176,17 @@ window.DIAGRAMS = {
   <rect x="40" y="40" width="400" height="120" rx="16" fill="#102018" stroke="#34d399" stroke-width="2"/>
   <text x="240" y="85" text-anchor="middle" fill="#34d399" font-size="15" font-family="system-ui,sans-serif" font-weight="700">IN SCOPE (공격 가능)</text>
   <text x="240" y="115" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">문서에 적힌 URL · API · 기간</text>
-  <text x="240" y="138" text-anchor="middle" fill="#6b7394" font-size="11" font-family="system-ui,sans-serif">여기 안에서만 해커 모드 ON</text>
+  <text x="240" y="138" text-anchor="middle" fill="#6b7394" font-size="11" font-family="system-ui,sans-serif">여기 안에서만 테스트 모드를 켭니다</text>
   <rect x="470" y="40" width="170" height="120" rx="16" fill="#201018" stroke="#fb7185" stroke-width="2"/>
   <text x="555" y="95" text-anchor="middle" fill="#fb7185" font-size="14" font-family="system-ui,sans-serif" font-weight="700">OUT</text>
   <text x="555" y="120" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="system-ui,sans-serif">서드파티 · DoS</text>
   <text x="555" y="140" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="system-ui,sans-serif">실사용자 데이터</text>
-  <text x="340" y="185" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">범위 밖 패킷 한 방이면 공부가 아니라 사고가 된다</text>
+  <text x="340" y="185" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">범위 밖 요청 한 번이면 학습이 아니라 사고가 됩니다</text>
 </svg>`,
 
   injection_context: `
 <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="주입과 컨텍스트">
-  <text x="340" y="28" text-anchor="middle" fill="#e8eaf6" font-size="13" font-family="system-ui,sans-serif" font-weight="700">같은 입력도 “어디에 붙느냐”에 따라 무기가 된다</text>
+  <text x="340" y="28" text-anchor="middle" fill="#e8eaf6" font-size="13" font-family="system-ui,sans-serif" font-weight="700">같은 입력도 어디에 붙는지에 따라 위험이 달라집니다</text>
   <rect x="30" y="50" width="120" height="50" rx="10" fill="#151a30" stroke="#00e5ff"/>
   <text x="90" y="80" text-anchor="middle" fill="#00e5ff" font-size="12" font-family="system-ui,sans-serif">사용자 입력</text>
   <path d="M160 75 H210" stroke="#6b7394" stroke-width="2"/>
@@ -219,6 +219,6 @@ window.DIAGRAMS = {
   <text x="510" y="85" text-anchor="middle" fill="#00e5ff" font-size="15" font-family="system-ui,sans-serif" font-weight="700">Postman</text>
   <text x="510" y="115" text-anchor="middle" fill="#c8cee8" font-size="12" font-family="system-ui,sans-serif">정리 · 컬렉션 · 시나리오</text>
   <text x="510" y="138" text-anchor="middle" fill="#9aa3c7" font-size="11" font-family="system-ui,sans-serif">문서화 / 러너 / 변수</text>
-  <text x="340" y="185" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">Postman으로 지도 만들고, Burp로 칼을 댄다</text>
+  <text x="340" y="185" text-anchor="middle" fill="#9aa3c7" font-size="12" font-family="system-ui,sans-serif">Postman으로 지도를 만들고, Burp로 심층 분석을 합니다</text>
 </svg>`,
 };
