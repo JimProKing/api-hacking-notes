@@ -12,11 +12,48 @@
 ```bash
 cd "api-hacking-notes"
 python -m http.server 8765
+# 또는
+npm install
+npm start
 ```
 
-브라우저: <http://127.0.0.1:8765>
+브라우저: <http://127.0.0.1:8765> (또는 3000)
 
 > `file://` 로 직접 열어도 동작하지만, 일부 브라우저 정책상 로컬 서버를 권장합니다.
+
+## Railway 배포
+
+이 레포는 **Node `serve`로 정적 파일을 `$PORT`에 띄우도록** 설정되어 있습니다.  
+HTML만 있으면 Railway가 “실행할 프로세스”를 못 찾아 공개 URL이 안 생기거나 Deploy가 실패합니다.
+
+### 1) GitHub 연결 후 배포
+
+1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
+2. `JimProKing/api-hacking-notes` 선택
+3. 배포가 **Success / Online** 될 때까지 대기 (Build 로그에 `serve` 기동 확인)
+
+### 2) 공개 링크 만들기 (여기 빼먹으면 URL 없음)
+
+Railway는 배포만 해서는 브라우저용 주소가 **자동으로 안 붙는 경우**가 많습니다.
+
+1. 프로젝트에서 해당 **Service** 클릭  
+2. 상단 **Settings**  
+3. **Networking** → **Public Networking**  
+4. **Generate Domain** 클릭  
+5. `xxx.up.railway.app` 주소가 생김 → 그 링크로 접속  
+
+포트는 보통 비워 두거나, 앱이 `$PORT`를 쓰므로 Railway 기본값이면 됩니다.
+
+### 3) 안 될 때 체크
+
+| 증상 | 조치 |
+|------|------|
+| Domain 메뉴가 없음 | 서비스가 아직 실패 상태 → **Deployments** 로그 확인 |
+| Build fail | Node 설치/`npm install` 로그 확인. `package.json` 있는지 확인 |
+| 502 / Application failed | `start`가 `$PORT`를 안 듣는 경우 → 이 레포 `railway.toml` 유지 |
+| 예전 커밋만 배포 | GitHub `main` 최신 push 후 **Redeploy** |
+
+로컬과 동일하게 루트의 `index.html`이 서빙됩니다.
 
 ## 구성
 

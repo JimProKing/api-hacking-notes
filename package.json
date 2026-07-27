@@ -1,0 +1,16 @@
+{
+  "name": "api-hacking-notes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API 해킹 야간 노트 — static study site",
+  "scripts": {
+    "start": "serve -s . -l tcp://0.0.0.0:${PORT:-3000}",
+    "dev": "serve -s . -l 3000"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
