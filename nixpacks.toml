@@ -1,8 +1,9 @@
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
+# No npm install needed (zero dependencies)
 [phases.install]
-cmds = ["npm install --omit=dev"]
+cmds = ["echo 'no dependencies'"]
 
 [start]
-cmd = "npx serve -s . -l tcp://0.0.0.0:$PORT"
+cmd = "node server.js"

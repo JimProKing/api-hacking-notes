@@ -1,0 +1,7 @@
+_debug*.png
+_*.png
+_*.py
+__pycache__/
+.git/
+*.md
+!README.md
