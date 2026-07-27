@@ -132,17 +132,22 @@
     };
   }
 
+  function hideAllPanels() {
+    ["panel-dashboard", "panel-chapter", "panel-legal", "panel-tools", "panel-glossary", "panel-achievements", "panel-flash"].forEach(
+      (id) => {
+        const el = document.getElementById(id);
+        if (el) el.hidden = true;
+      }
+    );
+  }
+
   function openChapter(id) {
     const ch = CURRICULUM.chapters.find((c) => c.id === id);
     if (!ch) return;
     state.chapterId = id;
     showView("study");
-    $("#panel-dashboard").hidden = true;
+    hideAllPanels();
     $("#panel-chapter").hidden = false;
-    $("#panel-tools").hidden = true;
-    $("#panel-glossary").hidden = true;
-    $("#panel-achievements").hidden = true;
-    $("#panel-flash").hidden = true;
 
     const part = CURRICULUM.parts.find((p) => p.id === ch.part);
     $("#crumb").innerHTML = `<span>${esc(part ? "PART " + part.num : "")}</span> · <strong>${esc(ch.title)}</strong>`;
@@ -313,12 +318,8 @@
   function openDashboard() {
     state.chapterId = null;
     showView("study");
+    hideAllPanels();
     $("#panel-dashboard").hidden = false;
-    $("#panel-chapter").hidden = true;
-    $("#panel-tools").hidden = true;
-    $("#panel-glossary").hidden = true;
-    $("#panel-achievements").hidden = true;
-    $("#panel-flash").hidden = true;
     $("#crumb").innerHTML = "<strong>커리큘럼 대시보드</strong>";
 
     const st = Progress.stats(CURRICULUM);
@@ -358,12 +359,20 @@
         <h1>혼자 정리한 API 해킹 로드맵</h1>
         <p class="tagline">코리 볼 《API 해킹의 모든 것》 흐름을 따라, 조금씩 — 끝까지. 끝나면 저자급 지도를 머릿속에 남긴다.</p>
       </header>
+      <button type="button" class="legal-banner" id="btn-legal-dash">
+        <div>
+          <strong>⚖ 합법적으로 해킹 연습하는 곳</strong>
+          <span>로컬 랩 · PortSwigger · TryHackMe/HTB · 버그바운티 — 어디서, 어떻게 시작하는지 친절 가이드</span>
+        </div>
+        <span class="legal-banner-go">열어보기 →</span>
+      </button>
       <div class="dash-grid">${parts}</div>
       <h3 style="margin:0 0 0.75rem">전체 장</h3>
       <div class="ch-list">${list}</div>
     `;
 
     $("#panel-dashboard").onclick = (e) => {
+      if (e.target.closest("#btn-legal-dash")) return openLegalLabs();
       const row = e.target.closest("[data-id]");
       if (row) return openChapter(row.dataset.id);
       const part = e.target.closest("[data-part]");
@@ -375,16 +384,147 @@
     updateProgressUI();
   }
 
+  function openLegalLabs() {
+    if (!window.LEGAL_LABS) {
+      toast("legal-labs.js 로드 실패");
+      return;
+    }
+    state.chapterId = null;
+    showView("study");
+    hideAllPanels();
+    $("#panel-legal").hidden = false;
+    $("#crumb").innerHTML = "<strong>합법 실습 가이드</strong>";
+
+    const L = LEGAL_LABS;
+    const rules = L.intro.goldenRules
+      .map((r, i) => `<li><span class="rule-n">${i + 1}</span>${esc(r)}</li>`)
+      .join("");
+
+    const paths = L.paths
+      .map(
+        (p) => `<div class="path-card" style="--pc:${p.color}">
+        <h3>${esc(p.title)}</h3>
+        <ol>${p.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol>
+      </div>`
+      )
+      .join("");
+
+    const cats = L.categories
+      .map((cat) => {
+        const plats = cat.platforms
+          .map((pl) => {
+            const tags = (pl.tags || [])
+              .map((t) => `<span class="tag cyan">${esc(t)}</span>`)
+              .join("");
+            const how = (pl.how || [])
+              .map((h, i) => `<li><span class="how-n">${i + 1}</span><span>${esc(h)}</span></li>`)
+              .join("");
+            return `<article class="plat-card">
+              <div class="plat-head">
+                <div>
+                  <h4>${esc(pl.name)}</h4>
+                  <div class="ch-meta" style="margin:0.4rem 0 0">${tags}
+                    <span class="tag amber">${esc(pl.level || "")}</span>
+                    <span class="tag pink">${esc(pl.cost || "")}</span>
+                  </div>
+                </div>
+                <a class="btn btn-primary btn-sm" href="${esc(pl.url)}" target="_blank" rel="noopener noreferrer">사이트 열기 ↗</a>
+              </div>
+              <p class="plat-why"><strong>왜 가나요?</strong> ${esc(pl.why)}</p>
+              <div class="plat-how">
+                <div class="how-title">이렇게 시작하세요</div>
+                <ol class="how-list">${how}</ol>
+              </div>
+              ${pl.tip ? `<div class="callout tip"><div class="ct">팁</div><div>${esc(pl.tip)}</div></div>` : ""}
+            </article>`;
+          })
+          .join("");
+        return `<section class="section legal-cat" id="legal-${esc(cat.id)}">
+          <h2>${esc(cat.title)}</h2>
+          <p class="cat-blurb">${esc(cat.blurb)}</p>
+          ${plats}
+        </section>`;
+      })
+      .join("");
+
+    const week = L.weeklyPlan.days
+      .map((d) => `<div class="week-cell"><b>${esc(d.day)}</b><span>${esc(d.do)}</span></div>`)
+      .join("");
+
+    const check = L.checklist.map((c) => `<li>☐ ${esc(c)}</li>`).join("");
+    const faq = L.faq
+      .map(
+        (f) => `<details class="faq-item"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`
+      )
+      .join("");
+
+    const toc = L.categories
+      .map((c) => `<a href="#legal-${esc(c.id)}">${esc(c.title.replace(/^\d+\.\s*/, ""))}</a>`)
+      .join("");
+
+    $("#panel-legal").innerHTML = `
+      <header class="ch-hero" data-num="⚖">
+        <div class="ch-meta">
+          <span class="tag cyan">Legal only</span>
+          <span class="tag amber">허가된 곳만</span>
+          <span class="tag pink">친절 가이드</span>
+        </div>
+        <h1>${esc(L.intro.title)}</h1>
+        <p class="tagline">${esc(L.intro.tagline)}</p>
+      </header>
+
+      <div class="callout warn">
+        <div class="ct">황금 규칙 — 이것만 기억해도 절반은 성공</div>
+        <ul class="rule-list">${rules}</ul>
+      </div>
+
+      <nav class="sec-toc" aria-label="실습 가이드 목차">
+        <a href="#legal-paths">추천 루트</a>
+        ${toc}
+        <a href="#legal-week">주간 루틴</a>
+        <a href="#legal-check">출격 전 체크</a>
+        <a href="#legal-faq">FAQ</a>
+      </nav>
+
+      <section class="section" id="legal-paths">
+        <h2><span class="sn">ROUTE</span> 나한테 맞는 길</h2>
+        <p>책을 읽는 것과 손을 쓰는 것은 다르다. 아래 중 하나 골라 <strong>이번 주부터</strong> 따르면 된다.</p>
+        <div class="path-grid">${paths}</div>
+      </section>
+
+      ${cats}
+
+      <section class="section" id="legal-week">
+        <h2><span class="sn">WEEK</span> ${esc(L.weeklyPlan.title)}</h2>
+        <div class="week-grid">${week}</div>
+      </section>
+
+      <section class="section" id="legal-check">
+        <h2><span class="sn">CHECK</span> 패킷 보내기 전 체크리스트</h2>
+        <ul class="takeaways">${check}</ul>
+      </section>
+
+      <section class="section" id="legal-faq">
+        <h2><span class="sn">FAQ</span> 자주 묻는 질문</h2>
+        <div class="faq-list">${faq}</div>
+      </section>
+
+      <div class="ch-actions">
+        <button type="button" class="btn btn-primary" id="btn-legal-back">← 대시보드로</button>
+        <button type="button" class="btn btn-ghost" id="btn-legal-ch0">Ch.0 보안 테스트 준비 읽기</button>
+      </div>
+    `;
+
+    $("#btn-legal-back").onclick = () => openDashboard();
+    $("#btn-legal-ch0").onclick = () => openChapter("ch00");
+  }
+
   function openTools() {
     Progress.visitTools();
     updateProgressUI();
     showView("study");
-    $("#panel-dashboard").hidden = true;
-    $("#panel-chapter").hidden = true;
+    hideAllPanels();
     $("#panel-tools").hidden = false;
-    $("#panel-glossary").hidden = true;
-    $("#panel-achievements").hidden = true;
-    $("#panel-flash").hidden = true;
     $("#crumb").innerHTML = "<strong>인터랙티브 도구</strong>";
 
     const owasp = Tools.owaspMap()
@@ -473,12 +613,8 @@ Accept: application/json</textarea></div>
 
   function openGlossaryOnce() {
     showView("study");
-    $("#panel-dashboard").hidden = true;
-    $("#panel-chapter").hidden = true;
-    $("#panel-tools").hidden = true;
+    hideAllPanels();
     $("#panel-glossary").hidden = false;
-    $("#panel-achievements").hidden = true;
-    $("#panel-flash").hidden = true;
     $("#crumb").innerHTML = "<strong>용어집</strong>";
     $("#panel-glossary").innerHTML = `
       <header class="ch-hero" data-num="Aa"><h1>용어집</h1>
@@ -500,12 +636,8 @@ Accept: application/json</textarea></div>
 
   function openAchievements() {
     showView("study");
-    $("#panel-dashboard").hidden = true;
-    $("#panel-chapter").hidden = true;
-    $("#panel-tools").hidden = true;
-    $("#panel-glossary").hidden = true;
+    hideAllPanels();
     $("#panel-achievements").hidden = false;
-    $("#panel-flash").hidden = true;
     $("#crumb").innerHTML = "<strong>업적</strong>";
     const s = Progress.get();
     $("#panel-achievements").innerHTML = `
@@ -533,11 +665,7 @@ Accept: application/json</textarea></div>
 
   function openFlash() {
     showView("study");
-    $("#panel-dashboard").hidden = true;
-    $("#panel-chapter").hidden = true;
-    $("#panel-tools").hidden = true;
-    $("#panel-glossary").hidden = true;
-    $("#panel-achievements").hidden = true;
+    hideAllPanels();
     $("#panel-flash").hidden = false;
     $("#crumb").innerHTML = "<strong>플래시카드</strong>";
 
@@ -673,6 +801,10 @@ Accept: application/json</textarea></div>
     $("#btn-dash")?.addEventListener("click", () => {
       closeMobileNav();
       openDashboard();
+    });
+    $("#btn-legal")?.addEventListener("click", () => {
+      closeMobileNav();
+      openLegalLabs();
     });
     $("#btn-tools")?.addEventListener("click", () => {
       closeMobileNav();

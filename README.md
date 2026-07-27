@@ -47,6 +47,7 @@ python -m http.server 8765
 - 업적(저자급 이해 등)  
 - JWT 디코더, HTTP raw 빌더, 상태 코드 해석, 퍼징 아이디어  
 - OWASP API ↔ 장 매핑, 용어집, 플래시카드  
+- **합법 실습 가이드**: 로컬 랩, PortSwigger, THM/HTB, 버그바운티, CTF + 시작 방법  
 - 진도는 브라우저 `localStorage`에만 저장  
 
 ## 콘텐츠 재생성
