@@ -725,6 +725,128 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .section li { margin: 0.4rem 0; }
 .section li::marker { color: var(--cyan); }
 
+.prose {
+  margin: 0 0 1.05rem !important;
+  color: #d5dbf4 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.8 !important;
+}
+.prose-list {
+  margin: 0 0 1.1rem !important;
+  padding-left: 1.35rem !important;
+  color: #d5dbf4 !important;
+  font-size: 1.02rem !important;
+  line-height: 1.75 !important;
+}
+.sec-h3 {
+  margin: 1.35rem 0 0.65rem;
+  font-size: 1.08rem;
+  color: var(--cyan);
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+.analogy {
+  margin: 1rem 0 1.2rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.12), rgba(0, 229, 255, 0.05));
+}
+.analogy-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--violet);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+.analogy-body {
+  color: #e0dcf8;
+  font-size: 1.0rem;
+  line-height: 1.7;
+}
+
+.steps-box {
+  margin: 1rem 0 1.25rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  background: rgba(0, 229, 255, 0.04);
+}
+.steps-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 0.75rem;
+}
+.steps-list {
+  list-style: none;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.steps-list li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin: 0.55rem 0 !important;
+  color: #d5dbf4;
+  font-size: 1.0rem;
+  line-height: 1.65;
+}
+.step-n {
+  flex-shrink: 0;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: rgba(0, 229, 255, 0.16);
+  color: var(--cyan);
+  margin-top: 0.1rem;
+}
+
+.diagram {
+  margin: 1.25rem 0 1.4rem;
+}
+.diagram-frame {
+  border-radius: 16px;
+  border: 1px solid var(--line2);
+  background: linear-gradient(180deg, #0e1224, #0a0c16);
+  padding: 1rem 0.75rem;
+  overflow-x: auto;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+.diagram-frame svg {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin: 0 auto;
+}
+.diagram figcaption,
+.figure-img figcaption {
+  margin-top: 0.55rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--faint);
+  line-height: 1.5;
+}
+.figure-img {
+  margin: 1.25rem 0;
+  text-align: center;
+}
+.figure-img img {
+  max-width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--line2);
+}
+
 .callout {
   margin: 0.9rem 0;
   padding: 0.9rem 1rem;

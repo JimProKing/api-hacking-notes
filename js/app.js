@@ -54,11 +54,22 @@
     if (!b) return "";
     switch (b.type) {
       case "p":
-        return `<p>${esc(b.text)}</p>`;
+        return `<p class="prose">${esc(b.text)}</p>`;
+      case "h3":
+        return `<h3 class="sec-h3">${esc(b.text)}</h3>`;
       case "list":
-        return `<ul>${b.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>`;
+        return `<ul class="prose-list">${b.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>`;
       case "callout":
         return `<div class="callout ${esc(b.tone || "tip")}"><div class="ct">${esc(b.title || "Note")}</div><div>${esc(b.text)}</div></div>`;
+      case "analogy":
+        return `<div class="analogy"><div class="analogy-label">💡 비유로 이해하기</div><div class="analogy-body"><strong>${esc(b.title || "")}</strong>${b.title ? " — " : ""}${esc(b.text)}</div></div>`;
+      case "steps":
+        return `<div class="steps-box"><div class="steps-title">${esc(b.title || "차근차근")}</div><ol class="steps-list">${(b.items || [])
+          .map((s, i) => {
+            if (typeof s === "string") return `<li><span class="step-n">${i + 1}</span><span>${esc(s)}</span></li>`;
+            return `<li><span class="step-n">${i + 1}</span><span><strong>${esc(s.title || "")}</strong>${s.title ? " — " : ""}${esc(s.text || s.body || "")}</span></li>`;
+          })
+          .join("")}</ol></div>`;
       case "code":
         return `<div class="codeblock"><div class="chd"><span>${esc(b.title || b.lang || "code")}</span><button type="button" class="copy" data-copy="${esc(b.code)}">copy</button></div><pre>${esc(b.code)}</pre></div>`;
       case "table": {
@@ -72,6 +83,21 @@
         return `<div class="cards">${b.items
           .map((c) => `<div class="mini-card"><h4>${esc(c.title)}</h4><p>${esc(c.text)}</p></div>`)
           .join("")}</div>`;
+      case "diagram": {
+        // Prefer named diagram from DIAGRAMS registry, else inline svg
+        let svg = b.svg || "";
+        if (b.id && window.DIAGRAMS && window.DIAGRAMS[b.id]) svg = window.DIAGRAMS[b.id];
+        if (!svg) return "";
+        return `<figure class="diagram">
+          <div class="diagram-frame">${svg}</div>
+          ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ""}
+        </figure>`;
+      }
+      case "figure":
+        return `<figure class="figure-img">
+          <img src="${esc(b.src)}" alt="${esc(b.alt || b.caption || "")}" loading="lazy" />
+          ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ""}
+        </figure>`;
       default:
         return "";
     }
