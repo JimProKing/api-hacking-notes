@@ -1,9 +1,13 @@
 # API 해킹 야간 노트
 
 코리 볼 《**API 해킹의 모든 것**》(원서: *Hacking APIs*, No Starch Press)을  
-**혼자 정리하며 만든 것처럼** 설계한 인터랙티브 학습 웹사이트입니다.
+바탕으로 정리한 인터랙티브 학습 웹사이트입니다.
 
 포트폴리오·개인 학습용: 다크 UI · 진도/XP/업적 · 퀴즈 · 실험실 · 도구 · 합법 실습 가이드 · SVG 다이어그램.
+
+## 🌐 Live Demo
+
+**https://api-hacking-notes-production.up.railway.app/**
 
 ## 로컬 실행
 
@@ -32,17 +36,20 @@ HTML만 올리면 Railway가 실행할 프로세스를 못 찾아 공개 URL이 
 | `nixpacks.toml` | Node 20, start 명령 |
 | `.railwayignore` | 디버그 이미지 등 제외 |
 
-### 배포 순서
+### 현재 배포
 
-1. 이 레포를 GitHub에 push (`main`)
-2. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
-3. `JimProKing/api-hacking-notes` 선택
-4. Deployments가 **Success** 될 때까지 대기  
-   - 로그에 `[api-hacking-notes] listening on http://0.0.0.0:XXXX` 보이면 OK
-5. **공개 링크 (필수)**  
-   - Service → **Settings** → **Networking** → **Public Networking**  
-   - **Generate Domain** → `xxx.up.railway.app`
-6. 그 URL로 접속
+| 항목 | 값 |
+|------|-----|
+| Live | https://api-hacking-notes-production.up.railway.app/ |
+| Health | https://api-hacking-notes-production.up.railway.app/health |
+
+### 재배포 순서
+
+1. 이 레포 `main`에 push
+2. Railway가 자동 배포하거나 **Redeploy**
+3. Deployments **Success** 확인  
+   - 로그: `[api-hacking-notes] listening on http://0.0.0.0:XXXX`
+4. 공개 도메인이 없다면 Settings → Networking → **Generate Domain**
 
 ### 안 될 때
 
