@@ -3,6 +3,10 @@
 코리 볼 《**API 해킹의 모든 것**》(원서: *Hacking APIs*, No Starch Press)을  
 바탕으로 정리한 인터랙티브 학습 웹사이트입니다.
 
+| 분류 | 상태 | 스택 | 바로 보기 |
+| --- | --- | --- | --- |
+| API 보안 · 학습 웹 | 완료 | JavaScript · Node · Railway | [Live](https://api-hacking-notes-production.up.railway.app/) |
+
 포트폴리오·개인 학습용: 다크 UI · 진도/XP/업적 · 퀴즈 · 실험실 · 도구 · 합법 실습 가이드 · SVG 다이어그램.
 
 ## 🌐 Live Demo
@@ -95,3 +99,10 @@ HTML만 올리면 Railway가 실행할 프로세스를 못 찾아 공개 URL이 
 ## 스택
 
 HTML · CSS · Vanilla JS · Node `http` (빌드/번들러 없음)
+
+---
+
+**관련 저장소** · [webhacking-bible-lab](https://github.com/JimProKing/webhacking-bible-lab) · [VulnBoard](https://github.com/JimProKing/VulnBoard) · [sql-injection-lab](https://github.com/JimProKing/sql-injection-lab) · [Unprotected-Admin-Functionality-simple](https://github.com/JimProKing/Unprotected-Admin-Functionality-simple) · [File-Path-Traversal-simple](https://github.com/JimProKing/File-Path-Traversal-simple) · [dreamhack](https://github.com/JimProKing/dreamhack)
+
+<sub>[JimProKing](https://github.com/JimProKing) · 이영찬 — 전체 저장소는 프로필의 프로젝트 지도에서 분야별로 볼 수 있습니다.</sub>
+<!-- jpk-footer -->
